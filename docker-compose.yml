@@ -17,3 +17,4 @@ services:
       <<: *common-variables
     ports:
       - "8080:8080"
+
