@@ -1,0 +1,42 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+          predicates:
+            - name: Path
+              args:
+                pattern: "'/api/'+serviceId.toLowerCase()+'/**'"
+          filters:
+            - name: RewritePath
+              args:
+                regexp: "'/api/' + serviceId.toLowerCase() + '/(?<remaining>.*)'"
+                replacement: "'/${remaining}'"
+    kubernetes:
+      enabled: false
+      loadbalancer:
+        enabled: false
+      reload:
+        enabled: false
+      config:
+        enabled: false
+  zipkin:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

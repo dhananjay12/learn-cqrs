@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.2</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>com.mynotes.cqrs.demo</groupId>
+	<artifactId>cqrs-demo-root</artifactId>
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+	<name>cqrs-demo</name>
+	<description>Demo project for CQRS</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.0</spring-cloud.version>
+		<skip.integration.tests>false</skip.integration.tests>
+		<skip.unit.tests>false</skip.unit.tests>
+		<docker.image.url>dhananjay12</docker.image.url>
+		<docker.image.prefix>cqrs</docker.image.prefix>
+		<jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>eureka-server</module>
+		<module>gateway</module>
+	</modules>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin
+				</artifactId> <!--is designed for running unit tests and if any of the tests fail then it will fail the build immediately.-->
+				<configuration>
+					<!-- Sets the VM argument line used when unit tests are run. -->
+					<argLine>${surefireArgLine}</argLine>
+					<skipTests>${skip.unit.tests}</skipTests>
+					<!-- Excludes integration tests when unit tests are run. -->
+					<excludes>
+						<exclude>**/*IT.java</exclude>
+						<exclude>**/*It.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin
+				</artifactId> <!-- is designed for running integration tests, and decouples failing the build if there are test failures from actually running the tests.-->
+				<configuration>
+					<!-- Sets the VM argument line used when integration tests are run. -->
+					<argLine>${failsafeArgLine}</argLine>
+					<skipTests>${skip.integration.tests}</skipTests>
+					<includes>
+						<include>**/*It.java</include>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.0.0</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>false</generateGitPropertiesFile>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
+					<dateFormatTimeZone>GMT</dateFormatTimeZone>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
+					</includeOnlyProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>openjdk:11.0-jre-slim</image>
+					</from>
+					<to>
+						<image>${docker.image.url}/${docker.image.prefix}-${project.artifactId}</image>
+						<tags>
+							<tag>${project.version}</tag>
+						</tags>
+					</to>
+					<container>
+						<creationTime>${git.commit.time}</creationTime>
+						<filesModificationTime>${git.commit.time}</filesModificationTime>
+						<mainClass>com.mynotes.microservices.demo.eureka.EurekaServerApplication</mainClass>
+						<ports>
+							<port>8080</port>
+						</ports>
+					</container>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+    
+</project>

@@ -1,0 +1,12 @@
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  instance:
+    prefer-ip-address: true
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+spring:
+  application:
+    name: eureka-server

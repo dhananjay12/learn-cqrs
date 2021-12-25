@@ -1,0 +1,27 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.x
+      - run: mvn -N clean install # install root pom without children
+      - run: mvn clean install
+
+      - name: Build Images using JIB
+        run: mvn -pl eureka-server,gateway -Dmaven.test.skip=true package jib:build -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }}
+
