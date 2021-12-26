@@ -36,3 +36,5 @@ hs_err_pid*
 
 **/*.tgz
 helm/test.yaml
+AxonServer-*
+axon-data
