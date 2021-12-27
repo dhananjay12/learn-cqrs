@@ -28,7 +28,15 @@
 		<docker.image.url>dhananjay12</docker.image.url>
 		<docker.image.prefix>cqrs</docker.image.prefix>
 		<jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
+		<axon-spring-boot.version>4.5.5</axon-spring-boot.version>
+		<guava.version>31.0.1-jre</guava.version>
 	</properties>
+
+	<modules>
+		<module>eureka-server</module>
+		<module>gateway</module>
+		<module>product-service</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -42,17 +50,20 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<modules>
-		<module>eureka-server</module>
-		<module>gateway</module>
-	</modules>
-
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

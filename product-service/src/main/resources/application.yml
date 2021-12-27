@@ -1,0 +1,53 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: admin
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    show_sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate.cache.use_query_cache: false
+        hibernate.generate_statistics: true
+  h2:
+    console:
+      enabled: true
+  cloud:
+    kubernetes:
+      enabled: false
+      loadbalancer:
+        enabled: false
+      reload:
+        enabled: false
+      config:
+        enabled: false
+  zipkin:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka/
