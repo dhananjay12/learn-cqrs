@@ -2,7 +2,7 @@ package com.mynotes.cqrs.demo.productservice.query;
 
 import com.mynotes.cqrs.demo.productservice.events.ProductCreatedEvent;
 import com.mynotes.cqrs.demo.productservice.persistence.ProductEntity;
-import com.mynotes.cqrs.demo.productservice.persistence.ProductsRepository;
+import com.mynotes.cqrs.demo.productservice.persistence.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 @ProcessingGroup("product-group")
 public class ProductEventsHandler {
 
-    private final ProductsRepository productsRepository;
+    private final ProductRepository productsRepository;
 
-    public ProductEventsHandler(ProductsRepository productsRepository) {
+    public ProductEventsHandler(ProductRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
 

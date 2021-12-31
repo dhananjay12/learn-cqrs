@@ -3,6 +3,7 @@ server:
     include-message: always
     include-binding-errors: always
 
+
 spring:
   main:
     banner-mode: off
@@ -51,3 +52,8 @@ eureka:
     enabled: true
     serviceUrl:
       defaultZone: http://localhost:8080/eureka/
+axon:
+  eventhandling:
+    processors:
+      product-group:
+        mode: subscribing

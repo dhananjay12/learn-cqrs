@@ -1,7 +1,7 @@
 package com.mynotes.cqrs.demo.productservice.query;
 
 import com.mynotes.cqrs.demo.productservice.persistence.ProductEntity;
-import com.mynotes.cqrs.demo.productservice.persistence.ProductsRepository;
+import com.mynotes.cqrs.demo.productservice.persistence.ProductRepository;
 import com.mynotes.cqrs.demo.productservice.query.dto.ProductDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ProductsQueryHandler {
 
-    private final ProductsRepository productsRepository;
+    private final ProductRepository productsRepository;
 
-    public ProductsQueryHandler(ProductsRepository productsRepository) {
+    public ProductsQueryHandler(ProductRepository productsRepository) {
         this.productsRepository = productsRepository;
     }
 
