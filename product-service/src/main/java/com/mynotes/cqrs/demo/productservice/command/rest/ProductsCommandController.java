@@ -5,6 +5,7 @@ import com.mynotes.cqrs.demo.productservice.command.dto.CreateProductDTO;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class ProductsCommandController {
     }
 
     @PostMapping
-    public void createProduct(@Valid @RequestBody CreateProductDTO createProductDTO){
+    public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductDTO createProductDTO){
         log.info(createProductDTO.toString());
         CreateProductCommand createProductCommand = CreateProductCommand.builder()
                 .price(createProductDTO.getPrice())
@@ -32,12 +33,7 @@ public class ProductsCommandController {
                 .title(createProductDTO.getTitle())
                 .productId(UUID.randomUUID().toString()).build();
 
-        String result;
-        try {
-            result = commandGateway.sendAndWait(createProductCommand);
-        }catch (Exception ex){
-            result = ex.getLocalizedMessage();
-        }
-        log.info("Result==>"+result);
+        commandGateway.sendAndWait(createProductCommand);
+        return ResponseEntity.ok().build();
     }
 }

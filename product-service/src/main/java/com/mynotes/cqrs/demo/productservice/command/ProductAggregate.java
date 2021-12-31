@@ -38,6 +38,8 @@ public class ProductAggregate {
 
         AggregateLifecycle.apply(productCreatedEvent);
 
+
+
     }
 
     @EventSourcingHandler

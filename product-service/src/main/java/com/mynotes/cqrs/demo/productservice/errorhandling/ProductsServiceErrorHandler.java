@@ -7,13 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ProductsServiceErrorHandler {
 
-    @ExceptionHandler(value = {IllegalStateException.class})
-    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
+    @ExceptionHandler(value = IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex,WebRequest request) {
 
         ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
 
