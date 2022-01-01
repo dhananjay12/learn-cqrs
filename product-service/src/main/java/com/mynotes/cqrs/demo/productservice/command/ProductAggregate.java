@@ -22,7 +22,7 @@ public class ProductAggregate {
     }
 
     @CommandHandler
-    public ProductAggregate(CreateProductCommand createProductCommand){
+    public ProductAggregate(CreateProductCommand createProductCommand) throws Exception {
         // Just for example, even tough Spring DTO checks it
         if(createProductCommand.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Price cannot be less or equal than zero");
@@ -38,7 +38,9 @@ public class ProductAggregate {
 
         AggregateLifecycle.apply(productCreatedEvent);
 
-
+        if(createProductCommand.getTitle().equalsIgnoreCase("xbox")){
+            throw new Exception("An error occured during CreateProductCommand in @CommandHandler");
+        }
 
     }
 
